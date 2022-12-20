@@ -31,6 +31,7 @@ The Driver and Passenger microservices can call POST, GET, and PUT HTTP methods.
 The Trip microservice can call POST, GET, and PUT HTTP methods, as well as the Passenger and Driver microservices when required.
 
 ## Architecture Diagram
+[Ride-Sharing Architecture Diagram](https://github.com/4ngelixa/ETI_Asg1/blob/main/Diagram/Ride_Sharing_Diagram.png)
 
 ## Setup Instructions
 1. Install [GO](https://go.dev/dl/) and [MySQL Community Edition](https://dev.mysql.com/downloads/installer/).
@@ -48,7 +49,7 @@ This will create an account named user with the password 'password'.
 5. Clone the repository. Install [GitHub desktop](https://desktop.github.com/) and/or follow the steps [here](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/adding-and-cloning-repositories/cloning-and-forking-repositories-from-github-desktop)
 
 ## Utilising the code
-1. Install the relevant packages needed to run the code, with the exception of the "strconv" package for drivermain.go:
+1. Install the following packages before running the code
 ```
 "database/sql"
 "encoding/json"
@@ -69,9 +70,11 @@ cd ETI_Assg1\Entities\Driver
 go run driverMain.go
 
 ```
+```
 cd ETI_Assg1\Entities\Passenger
 go run passengerMain.go
 
+```
 ```
 cd ETI_Assg1\Entities\Trip
 go run tripMain.go
