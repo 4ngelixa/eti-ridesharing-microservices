@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title> ETI Assg 1 </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<style> h1 {text-align: center;} </style>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="C:\Users\angel\ETI_Assg1\HTML\Main.html">4nge Ride-Sharing</a>
+          </div>
+          <ul class="nav navbar-nav">
+              <li><a href="C:\Users\angel\ETI_Assg1\HTML\Driver.html">Driver</a></li>
+              <li><a href="C:\Users\angel\ETI_Assg1\HTML\Passenger.html">Passenger</a></li>
+              <li><a href="C:\Users\angel\ETI_Assg1\HTML\Trip.html">Trip</a></li>
+          </ul>
+        </div>
+      </nav>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function Trip(method, type, form) {
+        event.preventDefault();
+        const DataForm = new FormData(form);
+        var object;
+        var url;
+        if (type == "GET") {
+            var tripid;
+            for(let [name, value] of DataForm){
+                tripid = value
+            }
+            console.log(tripid)
+            url = "http://localhost:5002/api/v1/trips/"+tripid
+            console.log(url)
+        } else if (type == "POST" || type == "PUT"){
+            var object = {
+                "TripID": parseInt(DataForm.get("TripID")),
+                "PickupPC": DataForm.get("PickupPC"),
+                "DropoffPC": DataForm.get("DropoffPC"),
+                "DriverID": parseInt(DataForm.get("DriverID")),
+                "PassengerID": parseInt(DataForm.get("PassengerID")),
+                "TripStatus": DataForm.get("TripStatus")
+            };
+            object = JSON.stringify(object)
+            url = "http://localhost:5002/api/v1/trips/"+tripid
+        }
+        console.log(object)
+        $.ajax({
+            type: type,
+            url: url,
+            dataType: "json",
+            data: object,
+            contentType: "application/json",
+            success: function (data, textStatus, jqXHR){
+                var table = $("<table><tr><th>"+method+"</th></tr>");
+                if (type == "GET") {
+                    table.append("<tr><td>TripID:</td><td>" + data.tripid + "</td></tr>");
+                    table.append("<tr><td>PickupPC:</td><td>" + data["pickuppc"] + "</td></tr>");
+                    table.append("<tr><td>DropoffPC:</td><td>" + data["dropoffpc"] + "</td></tr>");
+                    table.append("<tr><td>DriverID:</td><td>" + data["driverid"] + "</td></tr>");
+                    table.append("<tr><td>PassengerID:</td><td>" + data["passengerid"] + "</td></tr>");
+                    table.append("<tr><td>TripStatus:</td><td>" + data["tripstatus"] + "</td></tr>")
+                }
+                $("#message").html(table);
+            },
+            error: function (jqXHR, textStatus, data) {
+                $("#message").empty();
+                if (type == "POST" || type == "PUT"){
+                    var table = $("<table><tr><th>"+jqXHR.responseText+"</th></tr>");
+                    $("#message").html(table);
+                } else {
+                    alert("Result:" + textStatus + " " + error + " " + jqXHR.textStatus + " " + jqXHR.statusText + " " + jqXHR.responseText);
+                }
+                $("#message").show();
+            }
+        });
+    };
+    function SwitchForm(optionValue){
+        $(".container").hide();
+        $("#message").hide();
+        var content = "#"+optionValue.value;
+        $(content).show();
+    }
+</script>
+
+<body>
+    <div><center>
+        <select id="PassengerRequestOptions" onchange="SwitchForm(this)">
+            <option value="GET" selected="selected">Get Trips</option>
+            <option value="POST">Create Trip</option>
+            <option value="PUT">Update Trip</option>
+        </select>
+    </div></center>
+
+    <div class="container" id="GET">
+        <h1>Get Trip</h1>
+        <h3>Search by TripID</h3>
+        <form onsubmit="Trip('GetAllTripsRecord', 'GET', this);">
+            <div>
+                <label for="TripID">Trip ID:</label>
+                <input type="text" class="form-control" name="TripID" id="TripID" placeholder="Enter your TripID">
+            </div>
+        <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+        <div class="container" id="POST">
+            <h1>Create New</h1>
+            <form onsubmit="Trip('InsertTripRecord', 'POST', this);">
+                <div>
+                    <label for="TripID">TripID:</label>
+                    <input type="text" class="form-control" name="TripID" id="TripID" placeholder="Enter your TripID">
+                </div>
+                <br>
+                <div>
+                    <label for="PickupPC">Pickup Point:</label>
+                    <input type="text" class="form-control" name="PickupPC" id="PickupPC" placeholder="Enter the postal code">
+                </div>
+                <br>
+                <div>
+                    <label for="DropoffPC">Dropoff Point:</label>
+                    <input type="text" class="form-control" name="DropoffPC" id="DropoffPC" placeholder="Enter the postal code">
+                </div>
+                <br>
+                <div>
+                    <label for="DriverID">DriverID:</label>
+                    <input type="text" class="form-control" name="DriverID" id="DriverID" placeholder="Enter your DriverID">
+                </div>
+                <br>
+                <div>
+                    <label for="PassengerID">PassengerID:</label>
+                    <input type="text" class="form-control" name="PassengerID" id="PassengerID" placeholder="Enter PassengerID">
+                </div>
+                <br>
+                <div>
+                    <label for="TripStatus">Trip Status:</label>
+                    <input type="text" class="form-control" name="TripStatus" id="TripStatus" placeholder="Enter the trip status">
+                </div>
+                <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+
+        <div class="container" id="PUT">
+            <h1>Update existing</h1>
+            <form onsubmit="Trip('EditTripRecord', 'PUT', this);">
+                <div>
+                    <label for="TripID">TripID:</label>
+                    <input type="text" class="form-control" name="TripID" id="TripID" placeholder="Enter your TripID">
+                </div>
+                <br>
+                <div>
+                    <label for="Pickup Point">Pickup Point:</label>
+                    <input type="text" class="form-control" name="PickupPC" id="PickupPC" placeholder="Enter the postal code">
+                </div>
+                <br>
+                <div>
+                    <label for="DropoffPC">Dropoff Point:</label>
+                    <input type="text" class="form-control" name="DropoffPC" id="DropoffPC" placeholder="Enter the postal code">
+                </div>
+                <br>
+                <div>
+                    <label for="DriverID">DriverID:</label>
+                    <input type="text" class="form-control" name="DriverID" id="DriverID" placeholder="Enter your DriverID">
+                </div>
+                <br>
+                <div>
+                    <label for="PassengerID">PassengerID:</label>
+                    <input type="text" class="form-control" name="PassengerID" id="PassengerID" placeholder="Enter PassengerID">
+                </div>
+                <br>
+                <div>
+                    <label for="TripStatus">Trip Status:</label>
+                    <input type="text" class="form-control" name="TripStatus" id="TripStatus" placeholder="Enter the trip status">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <br>
+        
+        <div id="message"></div>
+</body>
+<script>
+    $(".container").hide();
+    $("#GET").show();
+</script>
+</html>
