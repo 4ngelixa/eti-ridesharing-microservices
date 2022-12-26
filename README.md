@@ -21,9 +21,7 @@ The following microservices have been implemented:
 
 Each microservice is able to perform CRUD (Create, Read, Update, Delete) operations.
 
-Benefits of using Microservice architecture:
-- Easier to manage due to smaller code base
-- Each service scales independently when needed
+- Smaller code base = Application is easier to manage
 - Changes can be applied to each service independently
 - Each service runs separately and communicates with each other using lightweight mechanisms
 
@@ -40,7 +38,7 @@ The Trip microservice can call POST, GET, and PUT HTTP methods, as well as the P
 ```
 CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
 GRANT ALL ON *.* TO 'user'@'localhost'
- 
+
 ```
 This will create an account named user with the password 'password'.
 
@@ -49,7 +47,7 @@ This will create an account named user with the password 'password'.
 5. Clone the repository. Install [GitHub desktop](https://desktop.github.com/) and/or follow the steps [here](https://docs.github.com/en/desktop/contributing-and-collaborating-using-github-desktop/adding-and-cloning-repositories/cloning-and-forking-repositories-from-github-desktop)
 
 ## Utilising the code
-1. Install the following packages before running the code
+1. Install the following packages before running the application
 ```
 "database/sql"
 "encoding/json"

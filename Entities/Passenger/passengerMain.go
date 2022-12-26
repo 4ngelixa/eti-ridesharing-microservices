@@ -143,6 +143,7 @@ func passengerMain(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Get all Passenger records
 func allPassengers(w http.ResponseWriter, r *http.Request) {
 	kv := r.URL.Query()
 	for k, v := range kv {
@@ -182,6 +183,7 @@ func validatePassengerID(db *sql.DB, PID string) int {
 	}
 }
 
+// Passenger validation
 func validatePassenger(w http.ResponseWriter, r *http.Request) {
 	db, err := sql.Open("mysql", "user:password@tcp(127.0.0.1:3306)/RideSharingDB")
 	//Error handling:

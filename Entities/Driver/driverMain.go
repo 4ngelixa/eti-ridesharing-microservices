@@ -63,6 +63,7 @@ func driverMain(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
 		var getDrivers Driver
 		reqBody, err := ioutil.ReadAll(r.Body)
+
 		// Defer the close until the main function is done executing
 		defer r.Body.Close()
 		if err == nil {
@@ -84,6 +85,7 @@ func driverMain(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var newDriver Driver
 		reqBody, err := ioutil.ReadAll(r.Body)
+
 		// Defer the close until the main function is done executing
 		defer r.Body.Close()
 		if err == nil {
@@ -129,7 +131,7 @@ func driverMain(w http.ResponseWriter, r *http.Request) {
 				} else {
 					EditDriverRecord(db, updateDriver)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte("201 - Driver updated :)"))
+					w.Write([]byte("201 - Driver updated"))
 				}
 			}
 		}
@@ -151,7 +153,6 @@ func allDrivers(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusAccepted)
 	w.Write([]byte(GetAvailDriver(db)))
-	//json.NewEncoder(w).Encode(GetDriverRecords(db, params["driverid"], params["email"]))
 }
 
 func GetDriverID(w http.ResponseWriter, r *http.Request) {
@@ -185,6 +186,7 @@ func GetDriverID(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Search for driver based on their IC number
 func validateDriverIC(db *sql.DB, IC string) string {
 	query := fmt.Sprintf("SELECT * FROM Driver WHERE IcNo= '%s'", IC)
 	results, err := db.Query(query)
@@ -238,6 +240,7 @@ func validateDriverRecord(db *sql.DB, IC string) bool {
 	return false
 }
 
+// Search for Driver using Driver ID and IC no.
 func GetDriverRecords(db *sql.DB, DID string, IC string) Driver {
 	results, err := db.Query("SELECT * FROM Driver WHERE DriverID=? AND IcNo=?", DID, IC)
 	if err != nil {

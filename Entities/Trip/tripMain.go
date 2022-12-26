@@ -166,7 +166,6 @@ func trip(w http.ResponseWriter, r *http.Request) {
 
 // Retrieve all trips requested
 func GetAllTripsRecord(db *sql.DB, TID int) Trip {
-	//query := fmt.Sprintf("SELECT * FROM Trips WHERE TripID=?", TID)
 	results, err := db.Query("SELECT * FROM Trip WHERE TripID=?", TID)
 	if err != nil {
 		panic(err.Error())
@@ -286,7 +285,7 @@ func GetDriver(DriverID string) string {
 
 // Retrieve Drivers who are available
 func GetAvailDriver(db *sql.DB, DID int) int {
-	results, err := db.Query("SELECT Driver.DriverID FROM Drivers INNER JOIN Trips ON Drivers.DriverID = Trips.DriverID WHERE Trips.TripStatus='Finished'")
+	results, err := db.Query("SELECT Driver.DriverID FROM Driver INNER JOIN Trip ON Driver.DriverID = Trip.DriverID WHERE Trip.TripStatus='Finished'")
 	if err != nil {
 		panic(err.Error())
 	}
